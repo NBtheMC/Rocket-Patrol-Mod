@@ -31,11 +31,12 @@ class Play extends Phaser.Scene {
         keyF2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O); 
 
         //p1 rocket
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket');
+        this.p1Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'rocket');
         this.p1Rocket.player = 1;
         this.p1Rocket.upKey = keyUP1;
         this.p1Rocket.downKey = keyDOWN1;
         this.p1Rocket.fireKey = keyF1;
+        this.p1Rocket.angle = 90;
 
         //p2 rocket
         this.p2Rocket = new Rocket(this, borderUISize + borderPadding, game.config.height/2, 'rocket');
@@ -43,6 +44,7 @@ class Play extends Phaser.Scene {
         this.p2Rocket.upKey = keyUP2;
         this.p2Rocket.downKey = keyDOWN2;
         this.p2Rocket.fireKey = keyF2;
+        this.p2Rocket.angle = 270;
 
         //add spaceships
         this.ship01 = new Ship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30);
@@ -104,8 +106,8 @@ class Play extends Phaser.Scene {
         scoreConfigp1.fixedWidth = 0;
         scoreConfigp2.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, ()=>{
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfigp1).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfigp1).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -126,27 +128,39 @@ class Play extends Phaser.Scene {
         if(!this.gameOver){
             this.p1Rocket.update();
             this.p2Rocket.update();
-            this.ship01.update();
-            this.ship02.update();
-            this.ship03.update();
+            // this.ship01.update();
+            // this.ship02.update();
+            // this.ship03.update();
         }
         
 
         //collision checking P1
         if(this.checkCollision(this.p1Rocket, this.ship01)){
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
+            this.shipExplode(this.p1Rocket, this.ship01);
         }
         else if(this.checkCollision(this.p1Rocket, this.ship02)){
             this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
+            this.shipExplode(this.p1Rocket, this.ship02);
         }
         else if(this.checkCollision(this.p1Rocket, this.ship03)){
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
+            this.shipExplode(this.p1Rocket, this.ship03);
         }
 
         //collision checking P2
+        if(this.checkCollision(this.p2Rocket, this.ship01)){
+            this.p2Rocket.reset();
+            this.shipExplode(this.p2Rocket, this.ship01);
+        }
+        else if(this.checkCollision(this.p2Rocket, this.ship02)){
+            this.p2Rocket.reset();
+            this.shipExplode(this.p2Rocket, this.ship02);
+        }
+        else if(this.checkCollision(this.p2Rocket, this.ship03)){
+            this.p2Rocket.reset();
+            this.shipExplode(this.p2Rocket, this.ship03);
+        }
     }
 
     checkCollision(rocket,ship){
@@ -160,7 +174,7 @@ class Play extends Phaser.Scene {
         }
     }
 
-    shipExplode(ship){
+    shipExplode(player,ship){
         //hide ship
         ship.alpha = 0;
         //create explosion sprite at ship's position
@@ -172,7 +186,7 @@ class Play extends Phaser.Scene {
             boom.destroy();                       // remove explosion sprite
         });
         //add to score
-        this.p1Score += ship.points;
+        player += ship.points;
         this.scoreLeft.text = this.p1Score;
         //play explosion sound
         this.sound.play('sfx_explosion');

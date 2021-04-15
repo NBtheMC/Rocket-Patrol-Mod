@@ -7,6 +7,12 @@ class Rocket extends Phaser.GameObjects.Sprite{
         this.player;
         //current direction flying. -1 for left, 1 for right
         this.direction;
+        if(this.player == 1){
+            this.direction = 1;
+        }
+        else if(this.player == 2){
+            this.direction = -1;
+        }
         //set key bindings accordingly
         this.upKey;
         this.downKey;
@@ -34,13 +40,13 @@ class Rocket extends Phaser.GameObjects.Sprite{
             this.sfxRocket.play();
         }
         //move left when fired by p1. right by p2
-        if(this.isFiring && this.y >= borderUISize*3 + borderPadding*.5){
+        if(this.isFiring && this.x >= borderUISize + borderPadding){
             this.x -= this.movementSpeed;
         }
         //reset on miss
-        if(this.y <= borderUISize*3 + borderPadding*.5){
+        if(this.x <= borderUISize + borderPadding){
             this.isFiring = false;
-            this.y = game.config.height - borderUISize - borderPadding;
+            this.x = game.config.height - borderUISize - borderPadding;
         }
     }
 
@@ -53,7 +59,7 @@ class Rocket extends Phaser.GameObjects.Sprite{
         }
         //reset on right side
         else if(this.player == 2){
-            this.x = game.config.height - borderUISize - borderPadding;
+            this.x = game.config.width - borderUISize - borderPadding;
         }
     }
 }
