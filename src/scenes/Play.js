@@ -4,6 +4,8 @@ class Play extends Phaser.Scene {
     }
     preload(){
         this.load.image('starfield', 'assets/starfield.png');
+        this.load.image('planets', 'assets/planets.png');
+        this.load.image('asteroids', 'assets/asteroids.png');
         this.load.image('rocket', 'assets/rocket.png');
         this.load.image('spaceship', 'assets/spaceship.png');
         //spritesheet
@@ -14,6 +16,8 @@ class Play extends Phaser.Scene {
         console.log("play");
 
         this.starfield = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
+        this.planets = this.add.tileSprite(0,0,640,480, 'planets').setOrigin(0,0);
+        this.asteroids = this.add.tileSprite(0,0,640,480, 'asteroids').setOrigin(0,0);
 
         // Keyboard input declaration
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R); //reset key       
@@ -22,13 +26,23 @@ class Play extends Phaser.Scene {
         keyDOWN1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyF1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); 
         //player 2
-        keyUP2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
-        keyDOWN2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
-        keyF2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I); 
+        keyUP2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        keyDOWN2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+        keyF2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O); 
 
-        //add rockets
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket', 1);
-        this.p2Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket', 2);
+        //p1 rocket
+        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket');
+        this.p1Rocket.player = 1;
+        this.p1Rocket.upKey = keyUP1;
+        this.p1Rocket.downKey = keyDOWN1;
+        this.p1Rocket.fireKey = keyF1;
+
+        //p2 rocket
+        this.p2Rocket = new Rocket(this, borderUISize + borderPadding, game.config.height/2, 'rocket');
+        this.p2Rocket.player = 2;
+        this.p2Rocket.upKey = keyUP2;
+        this.p2Rocket.downKey = keyDOWN2;
+        this.p2Rocket.fireKey = keyF2;
 
         //add spaceships
         this.ship01 = new Ship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30);
@@ -105,8 +119,10 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
             this.scene.start("menuScene");
         }
-        //shift stars
-        this.starfield.tilePositionX -=4;
+        //parallax scrolling
+        this.starfield.tilePositionX -= 1;
+        this.planets.tilePositionX -= 1.2;
+        this.asteroids.tilePositionX -= 3;
         if(!this.gameOver){
             this.p1Rocket.update();
             this.p2Rocket.update();
