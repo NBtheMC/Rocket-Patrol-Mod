@@ -48,6 +48,7 @@ class Play extends Phaser.Scene {
 
         //add spaceships
         this.ship01 = new Ship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30);
+        this.ship01.angle = 90;
         this.ship02 = new Ship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Ship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
 
@@ -128,9 +129,9 @@ class Play extends Phaser.Scene {
         if(!this.gameOver){
             this.p1Rocket.update();
             this.p2Rocket.update();
-            // this.ship01.update();
-            // this.ship02.update();
-            // this.ship03.update();
+            this.ship01.update();
+            this.ship02.update();
+            this.ship03.update();
         }
         
 
@@ -174,7 +175,7 @@ class Play extends Phaser.Scene {
         }
     }
 
-    shipExplode(player,ship){
+    shipExplode(rocket,ship){
         //hide ship
         ship.alpha = 0;
         //create explosion sprite at ship's position
@@ -186,8 +187,14 @@ class Play extends Phaser.Scene {
             boom.destroy();                       // remove explosion sprite
         });
         //add to score
-        player += ship.points;
-        this.scoreLeft.text = this.p1Score;
+        if(rocket.player == 1){
+            this.p1Score += ship.points;
+            this.scoreLeft.text = this.p1Score;
+        }
+        else if(rocket.player == 2){
+            this.p2Score += ship.points;
+            this.scoreRight.text = this.p1Score;
+        }
         //play explosion sound
         this.sound.play('sfx_explosion');
     }
