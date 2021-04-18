@@ -17,7 +17,7 @@ class Rocket extends Phaser.GameObjects.Sprite{
         this.upKey;
         this.downKey;
         this.fireKey;    
-        this.movementSpeed = 2;    //pixels per frame
+        this.movementSpeed = 6;    //pixels per frame
         this.isFiring = false;     //firing status
         this.sfxRocket = scene.sound.add('sfx_rocket');
     }
@@ -32,22 +32,36 @@ class Rocket extends Phaser.GameObjects.Sprite{
                 this.y += this.movementSpeed;
             }      
         }
-        this.x = Phaser.Math.Clamp(this.x, borderUISize+borderPadding, game.config.width - borderUISize - borderPadding);
+        this.y = Phaser.Math.Clamp(this.y, borderUISize+borderPadding, game.config.height - borderUISize - borderPadding);
 
         //fire
         if(Phaser.Input.Keyboard.JustDown(this.fireKey) && !this.isFiring){
             this.isFiring = true;
             this.sfxRocket.play();
         }
-        //move left when fired by p1. right by p2
-        if(this.isFiring && this.x >= borderUISize + borderPadding){
-            this.x -= this.movementSpeed;
+        //move right when fired by p1. left by p2
+        if(this.player == 1){
+            if(this.isFiring && this.x <= game.config.width){
+                this.x += this.movementSpeed;
+            }
+            //reset on miss
+            if(this.x > game.config.width){
+                this.isFiring = false;
+                this.x = borderUISize + borderPadding;
+            }
         }
-        //reset on miss
-        if(this.x <= borderUISize + borderPadding){
-            this.isFiring = false;
-            this.x = game.config.height - borderUISize - borderPadding;
+        else if(this.player == 2){
+            if(this.isFiring && this.x >= borderUISize + borderPadding){
+                this.x -= this.movementSpeed;
+            }
+            //reset on miss
+            if(this.x < borderUISize + borderPadding){
+                this.isFiring = false;
+                this.x = game.config.width - borderUISize - borderPadding;
+            }
         }
+        
+        
     }
 
     //move rocket back to original position
