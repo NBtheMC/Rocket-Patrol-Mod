@@ -1,12 +1,18 @@
 class Rocket extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, texture, frame){
+    constructor(scene, x, y, texture, frame, p){
         super(scene, x, y, texture, frame);
         //add to scene
         scene.add.existing(this); 
         //set player value, 1 or 2
-        this.player;
-        this.currentPlayer;
+        this.player = p;
         this.paddle;
+        this.currentPlayer;
+        // if(p == 1){
+        //     this.p1Paddle = new Paddle(this, borderUISize + borderPadding, game.config.height/2, 'paddle');
+        // }
+        // else if(p == 2){
+        //     this.p2Paddle = new Paddle(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'paddle');
+        // }
         //set key bindings accordingly
         this.upKey;
         this.downKey;
@@ -41,7 +47,8 @@ class Rocket extends Phaser.GameObjects.Sprite{
             //reset on miss
             if(this.x > game.config.width){
                 this.isFiring = false;
-                this.x = borderUISize + borderPadding;
+                this.x = this.paddle.getX() + 6;
+                this.y = this.paddle.getY();
             }
         }
         else if(this.player == 2){
@@ -51,7 +58,8 @@ class Rocket extends Phaser.GameObjects.Sprite{
             //reset on miss
             if(this.x < borderUISize + borderPadding){
                 this.isFiring = false;
-                this.x = game.config.width - borderUISize - borderPadding;
+                this.x = this.paddle.getX() - 6;
+                this.y = this.paddle.getY();
             }
         }
         
@@ -63,11 +71,13 @@ class Rocket extends Phaser.GameObjects.Sprite{
         this.isFiring = false;
         //reset on left side
         if(this.player == 1){
-            this.x = this.paddle.x + 12;
+            this.x = this.paddle.getX() + 6;
+            this.y = this.paddle.getY();
         }
         //reset on right side
         else if(this.player == 2){
-            this.x = this.paddle.x - 12;
+            this.x = this.paddle.getX() - 6;
+            this.y = this.paddle.getY();
         }
     }
 }

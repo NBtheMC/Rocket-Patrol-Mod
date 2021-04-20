@@ -23,5 +23,13 @@ class Paddle extends Phaser.GameObjects.Sprite{
         this.y = Phaser.Math.Clamp(this.y, borderUISize+borderPadding, game.config.height - borderUISize - borderPadding);
     }
 
+    getX(){
+        return this.x;
+    }
+
+    getY(){
+        return this.y;
+    }
+
     
 }

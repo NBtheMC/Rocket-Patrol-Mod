@@ -56,6 +56,7 @@ class Play extends Phaser.Scene {
         this.p1Rocket.downKey = keyDOWN1;
         this.p1Rocket.fireKey = keyF1;
         this.p1Rocket.angle = 90;
+        this.p1Rocket.paddle = this.p1Paddle;
         
         //p2 paddle
         this.p2Paddle = new Paddle(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'paddle');
@@ -83,16 +84,14 @@ class Play extends Phaser.Scene {
 	    this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
 	    this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
 	    this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);            
-        
-        
-        
+            
         //animation config. binds to this scene
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion',{start: 0, end: 9, first: 0}),
             frameRate:30
         });
-        
+
         this.p1Score = 0;
         //display score p1
         let scoreConfigp1 = {
