@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
         this.p1Paddle.upKey = keyUP1;
         this.p1Paddle.downKey = keyDOWN1;
         //p1 rocket
-        this.p1Rocket = new Rocket(this, borderUISize + borderPadding + 6, game.config.height/2, 'rocket');
+        this.p1Rocket = new Rocket(this, borderUISize + borderPadding + 8, game.config.height/2, 'rocket');
         this.p1Rocket.player = 1;
         this.p1Rocket.currentPlayer = 1;
         this.p1Rocket.upKey = keyUP1;
@@ -57,13 +57,13 @@ class Play extends Phaser.Scene {
         this.p1Rocket.fireKey = keyF1;
         this.p1Rocket.angle = 90;
         this.p1Rocket.paddle = this.p1Paddle;
-        
+
         //p2 paddle
         this.p2Paddle = new Paddle(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'paddle');
         this.p2Paddle.upKey = keyUP2;
         this.p2Paddle.downKey = keyDOWN2;
         //p2 rocket
-        this.p2Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding - 6, game.config.height/2, 'rocket');
+        this.p2Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding - 8, game.config.height/2, 'rocket');
         this.p2Rocket.player = 2;
         this.p2Rocket.currentPlayer = 2;
         this.p2Rocket.upKey = keyUP2;
@@ -181,6 +181,9 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.p1Rocket, this.ship03);
         }
+        else if(this.checkCollision(this.p1Rocket, this.p1Paddle) || this.checkCollision(this.p1Rocket, this.p2Paddle)){
+            this.p1Rocket.reflect();
+        }
 
         //collision checking P2
         if(this.checkCollision(this.p2Rocket, this.ship01)){
@@ -194,6 +197,9 @@ class Play extends Phaser.Scene {
         else if(this.checkCollision(this.p2Rocket, this.ship03)){
             this.p2Rocket.reset();
             this.shipExplode(this.p2Rocket, this.ship03);
+        }
+        else if(this.checkCollision(this.p2Rocket, this.p1Paddle) || this.checkCollision(this.p2Rocket, this.p2Paddle)){
+            this.p2Rocket.reflect();
         }
     }
 

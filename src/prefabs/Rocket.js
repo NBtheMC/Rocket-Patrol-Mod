@@ -7,12 +7,6 @@ class Rocket extends Phaser.GameObjects.Sprite{
         this.player = p;
         this.paddle;
         this.currentPlayer;
-        // if(p == 1){
-        //     this.p1Paddle = new Paddle(this, borderUISize + borderPadding, game.config.height/2, 'paddle');
-        // }
-        // else if(p == 2){
-        //     this.p2Paddle = new Paddle(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'paddle');
-        // }
         //set key bindings accordingly
         this.upKey;
         this.downKey;
@@ -40,26 +34,22 @@ class Rocket extends Phaser.GameObjects.Sprite{
             this.sfxRocket.play();
         }
         //move right when fired by p1. left by p2
-        if(this.player == 1){
+        if(this.currentPlayer == 1){
             if(this.isFiring && this.x <= game.config.width){
                 this.x += this.movementSpeed;
             }
             //reset on miss
             if(this.x > game.config.width){
-                this.isFiring = false;
-                this.x = this.paddle.getX() + 6;
-                this.y = this.paddle.getY();
+                this.reset();
             }
         }
-        else if(this.player == 2){
+        else if(this.currentPlayer == 2){
             if(this.isFiring && this.x >= borderUISize + borderPadding){
                 this.x -= this.movementSpeed;
             }
             //reset on miss
             if(this.x < borderUISize + borderPadding){
-                this.isFiring = false;
-                this.x = this.paddle.getX() - 6;
-                this.y = this.paddle.getY();
+                this.reset();
             }
         }
         
@@ -69,15 +59,29 @@ class Rocket extends Phaser.GameObjects.Sprite{
     //move rocket back to original position
     reset(){
         this.isFiring = false;
+        this.currentPlayer = this.player;
+        this.movementSpeed = 6;
         //reset on left side
         if(this.player == 1){
-            this.x = this.paddle.getX() + 6;
+            this.x = this.paddle.getX() + 8;
             this.y = this.paddle.getY();
         }
         //reset on right side
         else if(this.player == 2){
-            this.x = this.paddle.getX() - 6;
+            this.x = this.paddle.getX() - 8;
             this.y = this.paddle.getY();
+        }
+    }
+
+    //happens when collides with paddle
+    //changes direction and multiplies moving speed
+    reflect(){
+        this.movementSpeed *= 1.1;
+        if(this.currentPlayer == 1){
+            this.currentPlayer = 2;
+        }
+        else if(this.currentPlayer == 2){
+            this.currentPlayer = 1;
         }
     }
 }
