@@ -1,6 +1,18 @@
 class Play extends Phaser.Scene {
-    constructor(){
+    constructor(highScoreConfig){
         super("playScene");
+        if(highScoreConfig === undefined){
+            this.p1High = 0;
+        }
+        else{
+            this.p1High = highScoreConfig.p1HighScore;
+        }
+        if(highScoreConfig === undefined){
+            this.p2High = 0;
+        }
+        else{
+            this.p2High = highScoreConfig.p2HighScore;
+        }
     }
     preload(){
         this.load.image('starfield', 'assets/starfield.png');
@@ -8,18 +20,20 @@ class Play extends Phaser.Scene {
         this.load.image('asteroids', 'assets/asteroids.png');
         this.load.image('rocket', 'assets/rocket.png');
         this.load.image('spaceship', 'assets/spaceship.png');
+        this.load.image('paddle', 'assets/paddle.png');
         //spritesheet
         this.load.spritesheet('explosion', 'assets/explosion.png', 
-            {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 7});
+            {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 9});
     }
     create(){
-        console.log("play");
+        console.log("p1: " + this.p1High + " p2: " + this.p2High);
 
         this.starfield = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
         this.planets = this.add.tileSprite(0,0,640,480, 'planets').setOrigin(0,0);
         this.asteroids = this.add.tileSprite(0,0,640,480, 'asteroids').setOrigin(0,0);
 
         // Keyboard input declaration
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R); //reset key       
         //player 1
         keyUP1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -30,21 +44,32 @@ class Play extends Phaser.Scene {
         keyDOWN2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
         keyF2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O); 
 
+        //p1 paddle
+        this.p1Paddle = new Paddle(this, borderUISize + borderPadding, game.config.height/2, 'paddle');
+        this.p1Paddle.upKey = keyUP1;
+        this.p1Paddle.downKey = keyDOWN1;
         //p1 rocket
-        this.p1Rocket = new Rocket(this, borderUISize + borderPadding, game.config.height/2, 'rocket');
+        this.p1Rocket = new Rocket(this, borderUISize + borderPadding + 6, game.config.height/2, 'rocket');
         this.p1Rocket.player = 1;
+        this.p1Rocket.currentPlayer = 1;
         this.p1Rocket.upKey = keyUP1;
         this.p1Rocket.downKey = keyDOWN1;
         this.p1Rocket.fireKey = keyF1;
         this.p1Rocket.angle = 90;
-
+        
+        //p2 paddle
+        this.p2Paddle = new Paddle(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'paddle');
+        this.p2Paddle.upKey = keyUP2;
+        this.p2Paddle.downKey = keyDOWN2;
         //p2 rocket
-        this.p2Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding, game.config.height/2, 'rocket');
+        this.p2Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding - 6, game.config.height/2, 'rocket');
         this.p2Rocket.player = 2;
+        this.p2Rocket.currentPlayer = 2;
         this.p2Rocket.upKey = keyUP2;
         this.p2Rocket.downKey = keyDOWN2;
         this.p2Rocket.fireKey = keyF2;
         this.p2Rocket.angle = 270;
+        this.p2Rocket.paddle = this.p2Paddle;
 
         //add spaceships
         this.ship01 = new Ship(this, game.config.width/2, game.config.height/2, 'spaceship', 0, 30);
@@ -116,10 +141,19 @@ class Play extends Phaser.Scene {
     update(){
         //restart
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
+            let highScoreConfig = {
+                p1HighScore: Math.max(this.p1Score,this.p1High),
+                p2HighScore: Math.max(this.p2Score,this.p2High)
+            };
             this.scene.restart();
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
-            this.scene.start("menuScene");
+            console.log("pressed space");
+            let highScoreConfig = {
+                p1HighScore: Math.max(this.p1Score,this.p1High),
+                p2HighScore: Math.max(this.p2Score,this.p2High)
+            };
+            this.scene.start("menuScene", highScoreConfig);
         }
         //parallax scrolling
         this.starfield.tilePositionX -= 1;
@@ -127,7 +161,9 @@ class Play extends Phaser.Scene {
         this.asteroids.tilePositionX -= -3;
         if(!this.gameOver){
             this.p1Rocket.update();
+            this.p1Paddle.update();
             this.p2Rocket.update();
+            this.p2Paddle.update();
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
@@ -162,10 +198,10 @@ class Play extends Phaser.Scene {
         }
     }
 
-    checkCollision(rocket,ship){
+    checkCollision(rocket,notRocket){
         //AABB checking
-        if(rocket.x < ship.x + ship.width && rocket.x + rocket.width > ship.x
-            && rocket.y < ship.y + ship.height && rocket.height +rocket.y > ship.y){
+        if(rocket.x < notRocket.x + notRocket.width && rocket.x + rocket.width > notRocket.x
+            && rocket.y < notRocket.y + notRocket.height && rocket.height +rocket.y > notRocket.y){
                 return true;
         }
         else{

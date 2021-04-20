@@ -6,6 +6,9 @@
 // Create new title screen (10)
 // Create new scrolling tile sprite for background (5)
 // Implement parallax scrolling (10)
+// Add your own (copyright-free) background music to the Play scene (5)
+// Create 4 new explosion SFX and randomize which one plays on impact (10)
+
 
 console.log("hows it going dood");
 let config = {
@@ -27,4 +30,3 @@ let keyR, keyLEFT, keyRIGHT;
 let keyF1, keyUP1, keyDOWN1;
 // P2 controls 
 let keyF2, keyUP2, keyDOWN2;
-

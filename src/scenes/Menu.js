@@ -1,6 +1,18 @@
 class Menu extends Phaser.Scene {
-    constructor(){
+    constructor(highScoreConfig){
         super("menuScene");
+        if(highScoreConfig === undefined){
+            this.p1High = 0;
+        }
+        else{
+            this.p1High = highScoreConfig.p1HighScore;
+        }
+        if(highScoreConfig === undefined){
+            this.p2High = 0;
+        }
+        else{
+            this.p2High = highScoreConfig.p2HighScore;
+        }
     }
     preload(){
         //load audio
@@ -10,8 +22,12 @@ class Menu extends Phaser.Scene {
     }
 
     create(){
-        console.log("menu");
-        
+        console.log("p1: " + this.p1High + " p2: " + this.p2High);
+        //high score config
+        this.highScoreConfig = {
+            p1HighScore: this.p1High,
+            p2HighScore: this.p2High
+        }
         //menu text config
         let menuConfig = {
             fontFamily: 'Courier',
@@ -24,7 +40,6 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-
         //show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'PONG PATROL', menuConfig).setOrigin(.5);
         this.add.text(game.config.width/2, game.config.height/2, 'P1: W/S to move E to fire', menuConfig).setOrigin(.5);
@@ -46,7 +61,7 @@ class Menu extends Phaser.Scene {
                 gameTimer: 60000
             }
             this.sound.play('sfx_select');
-            this.scene.start('playScene');
+            this.scene.start('playScene',this.highScoreConfig);
         }
         //hard mode
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
@@ -55,7 +70,7 @@ class Menu extends Phaser.Scene {
                 gameTimer: 45000
             }
             this.sound.play('sfx_select');
-            this.scene.start('playScene');
+            this.scene.start('playScene',highScoreConfig);
         }
     }
 }
