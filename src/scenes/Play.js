@@ -144,7 +144,7 @@ class Play extends Phaser.Scene {
                 p1HighScore: Math.max(this.p1Score,this.p1High),
                 p2HighScore: Math.max(this.p2Score,this.p2High)
             };
-            this.scene.restart();
+            this.scene.restart(highScoreConfig);
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
             console.log("pressed space");
@@ -201,6 +201,28 @@ class Play extends Phaser.Scene {
         else if(this.checkCollision(this.p2Rocket, this.p1Paddle) || this.checkCollision(this.p2Rocket, this.p2Paddle)){
             this.p2Rocket.reflect();
         }
+
+        //scoring on other player
+        if(this.p1Rocket.x < borderUISize + borderPadding){
+            this.p2Score += 50;
+            this.scoreRight.text = this.p2Score;
+            this.p1Rocket.reset();
+        }
+        else if(this.p1Rocket.x > game.config.width){
+            this.p1Score += 50;
+            this.scoreLeft.text = this.p1Score;
+            this.p1Rocket.reset();
+        }
+        if(this.p2Rocket.x < borderUISize + borderPadding){
+            this.p2Score += 50;
+            this.scoreRight.text = this.p2Score;
+            this.p2Rocket.reset();
+        }
+        else if(this.p2Rocket.x > game.config.width){
+            this.p1Score += 50;
+            this.scoreLeft.text = this.p1Score;
+            this.p2Rocket.reset();
+        }
     }
 
     checkCollision(rocket,notRocket){
@@ -234,7 +256,26 @@ class Play extends Phaser.Scene {
             this.p2Score += ship.points;
             this.scoreRight.text = this.p2Score;
         }
-        //play explosion sound
-        this.sound.play('sfx_explosion');
+        //play random explosion sound
+        let soundToPlay = Math.floor((Math.random() * 40) + 1);
+        console.log(soundToPlay);
+        switch(true){
+            case (soundToPlay<=10):
+                this.sound.play('sfx_explosion1');
+                break;
+            case (soundToPlay<=20):
+                this.sound.play('sfx_explosion2');
+                break;
+            case (soundToPlay<=30):
+                this.sound.play('sfx_explosion3');
+                break;
+            case (soundToPlay<=40):
+                this.sound.play('sfx_explosion4');
+                break;
+            case 41:
+                this.sound.play('sfx_explosion5');
+                break;
+        }
+        //this.sound.play('sfx_explosion4');
     }
 }

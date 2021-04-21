@@ -38,18 +38,10 @@ class Rocket extends Phaser.GameObjects.Sprite{
             if(this.isFiring && this.x <= game.config.width){
                 this.x += this.movementSpeed;
             }
-            //reset on miss
-            if(this.x > game.config.width){
-                this.reset();
-            }
         }
         else if(this.currentPlayer == 2){
             if(this.isFiring && this.x >= borderUISize + borderPadding){
                 this.x -= this.movementSpeed;
-            }
-            //reset on miss
-            if(this.x < borderUISize + borderPadding){
-                this.reset();
             }
         }
         

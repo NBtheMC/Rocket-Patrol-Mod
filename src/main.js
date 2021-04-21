@@ -1,7 +1,7 @@
 // Point breakdown -----------------------------------------
 // Track high score across scenes and display it in UI (5)
 // Simultaneous two player mode (30)
-// Create own mod: While shooting, a paddle is deployed. This paddle reflects any incoming rockets. If a rocket passes a player, a point gets added (Essentially pong)  (25)
+// Create own mod: While shooting, a paddle is deployed. This paddle reflects any incoming rockets. If a rocket passes a player, points gets added (Essentially pong)  (15)
 // Display time remaining (in seconds) on the screen (10)
 // Create new title screen (10)
 // Create new scrolling tile sprite for background (5)
