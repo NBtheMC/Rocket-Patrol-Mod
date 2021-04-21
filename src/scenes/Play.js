@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
         this.p1Paddle.upKey = keyUP1;
         this.p1Paddle.downKey = keyDOWN1;
         //p1 rocket
-        this.p1Rocket = new Rocket(this, borderUISize + borderPadding + 8, game.config.height/2, 'rocket');
+        this.p1Rocket = new Rocket(this, borderUISize + borderPadding + 16, game.config.height/2, 'rocket');
         this.p1Rocket.player = 1;
         this.p1Rocket.currentPlayer = 1;
         this.p1Rocket.upKey = keyUP1;
@@ -63,7 +63,7 @@ class Play extends Phaser.Scene {
         this.p2Paddle.upKey = keyUP2;
         this.p2Paddle.downKey = keyDOWN2;
         //p2 rocket
-        this.p2Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding - 8, game.config.height/2, 'rocket');
+        this.p2Rocket = new Rocket(this, game.config.width - borderUISize - borderPadding - 16, game.config.height/2, 'rocket');
         this.p2Rocket.player = 2;
         this.p2Rocket.currentPlayer = 2;
         this.p2Rocket.upKey = keyUP2;
@@ -147,7 +147,6 @@ class Play extends Phaser.Scene {
             this.scene.restart(highScoreConfig);
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
-            console.log("pressed space");
             let highScoreConfig = {
                 p1HighScore: Math.max(this.p1Score,this.p1High),
                 p2HighScore: Math.max(this.p2Score,this.p2High)
@@ -157,12 +156,12 @@ class Play extends Phaser.Scene {
         //parallax scrolling
         this.starfield.tilePositionX -= 1;
         this.planets.tilePositionX -= 1.2;
-        this.asteroids.tilePositionX -= -3;
+        this.asteroids.tilePositionX -= -1.5;
         if(!this.gameOver){
-            this.p1Rocket.update();
-            this.p1Paddle.update();
             this.p2Rocket.update();
             this.p2Paddle.update();
+            this.p1Rocket.update();
+            this.p1Paddle.update();
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
@@ -182,7 +181,7 @@ class Play extends Phaser.Scene {
             this.shipExplode(this.p1Rocket, this.ship03);
         }
         else if(this.checkCollision(this.p1Rocket, this.p1Paddle) || this.checkCollision(this.p1Rocket, this.p2Paddle)){
-            this.p1Rocket.reflect();
+           this.p1Rocket.reflect();
         }
 
         //collision checking P2
@@ -203,7 +202,7 @@ class Play extends Phaser.Scene {
         }
 
         //scoring on other player
-        if(this.p1Rocket.x < borderUISize + borderPadding){
+        if(this.p1Rocket.x < borderUISize){
             this.p2Score += 50;
             this.scoreRight.text = this.p2Score;
             this.p1Rocket.reset();
@@ -213,7 +212,7 @@ class Play extends Phaser.Scene {
             this.scoreLeft.text = this.p1Score;
             this.p1Rocket.reset();
         }
-        if(this.p2Rocket.x < borderUISize + borderPadding){
+        if(this.p2Rocket.x < borderUISize){
             this.p2Score += 50;
             this.scoreRight.text = this.p2Score;
             this.p2Rocket.reset();
@@ -248,11 +247,11 @@ class Play extends Phaser.Scene {
             boom.destroy();                       // remove explosion sprite
         });
         //add to score
-        if(rocket.player == 1){
+        if(rocket.currentPlayer == 1){
             this.p1Score += ship.points;
             this.scoreLeft.text = this.p1Score;
         }
-        else if(rocket.player == 2){
+        else if(rocket.currentPlayer == 2){
             this.p2Score += ship.points;
             this.scoreRight.text = this.p2Score;
         }
