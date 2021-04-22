@@ -29,7 +29,7 @@ class Menu extends Phaser.Scene {
             fontFamily: 'Comic Sans',
             fontSize: '42px',
             backgroundColor: '#2D9E28',
-            color: '#212426',
+            color: '#000000',
             padding:{
                 top: 5,
                 bottom: 5,
@@ -38,25 +38,29 @@ class Menu extends Phaser.Scene {
             angle: 0
         }
 
-        //show menu text
+        //menu text
         this.add.text(game.config.width/2, borderUISize + borderPadding, 'PADDLE PATROL', menuConfig).setOrigin(.5);
 
         menuConfig.fontSize = '32px'
-        //how 2 play
-        this.add.text(game.config.width/2, borderUISize + borderPadding, 'Shoot the ships and pass \nyour opponent to get points', menuConfig).setOrigin(.5);
 
         //p1 p2 controls
+
+        menuConfig.backgroundColor = '#EB8A23';
         this.add.text(game.config.width/2, game.config.height/2, 'Player 1 High Score: ' + this.p1High + ' W/S to move E to fire', menuConfig).setOrigin(.5);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Player 2 High Score: ' + this.p2High + ' I/K to move O to fire', menuConfig).setOrigin(.5);
         
+        menuConfig.backgroundColor = '#54579E';
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 10, 'Player 2 High Score: ' + this.p2High + ' I/K to move O to fire', menuConfig).setOrigin(.5);
+  
+        menuConfig.backgroundColor = '#00FF00';
+        this.add.text(game.config.width/2, game.config.height - (borderUISize + borderPadding), 'Press ← for Novice or → for Expert',menuConfig).setOrigin(.5);
+        
+        //how 2 play
+        this.add.text(game.config.width/2, 3*(borderUISize + borderPadding), '  Shoot the ships and pass\nyour opponent to get points', menuConfig).setOrigin(.5);
+
+        menuConfig.fontSize = '14px'
         menuConfig.backgroundColor = '#FFFFFF';
         let splashText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Now with music!', menuConfig).setOrigin(.5);
         splashText.angle = 10;
-  
-        menuConfig.backgroundColor = '#00FF00';
-        menuConfig.color = '#000';
-        let selectionText = this.add.text(game.config.width/2, game.config.height/2 + 2*(borderUISize + borderPadding), 'Press ← for Novice or → for Expert',menuConfig).setOrigin(.5);
-        
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
