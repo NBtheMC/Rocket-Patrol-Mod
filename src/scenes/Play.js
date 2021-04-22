@@ -8,7 +8,8 @@ class Play extends Phaser.Scene {
     }
     preload(){
         this.load.image('starfield', 'assets/starfield.png');
-        this.load.image('planets', 'assets/planets.png');
+        this.load.image('earth', 'assets/earth.png');
+        this.load.image('saturn', 'assets/saturn.png');
         this.load.image('asteroids', 'assets/asteroids.png');
         this.load.image('rocket', 'assets/rocket.png');
         this.load.image('spaceship', 'assets/spaceship.png');
@@ -21,7 +22,8 @@ class Play extends Phaser.Scene {
         console.log("p1: " + this.p1High + " p2: " + this.p2High);
 
         this.starfield = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
-        this.planets = this.add.tileSprite(0,0,640,480, 'planets').setOrigin(0,0);
+        this.saturn = this.add.tileSprite(0,0,640,480, 'saturn').setOrigin(0,0);
+        this.earth = this.add.tileSprite(0,0,640,480, 'earth').setOrigin(0,0);
         this.asteroids = this.add.tileSprite(0,0,640,480, 'asteroids').setOrigin(0,0);
 
         // Keyboard input declaration
@@ -146,9 +148,11 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene", highScoreConfig);
         }
         //parallax scrolling
-        this.starfield.tilePositionX -= 1;
-        this.planets.tilePositionX -= 1.2;
-        this.asteroids.tilePositionX -= -1.5;
+        this.starfield.tilePositionY -= 0.2;
+        this.earth.tilePositionY -= 1.2;
+        this.saturn.tilePositionY -= 0.5;
+        this.asteroids.tilePositionX -= -1.2;
+        this.asteroids.tilePositionY -= -1.5;
         if(!this.gameOver){
             this.p2Rocket.update();
             this.p2Paddle.update();
