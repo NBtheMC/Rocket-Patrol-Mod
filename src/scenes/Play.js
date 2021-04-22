@@ -1,18 +1,10 @@
 class Play extends Phaser.Scene {
-    constructor(highScoreConfig){
+    constructor(){
         super("playScene");
-        if(highScoreConfig === undefined){
-            this.p1High = 0;
-        }
-        else{
-            this.p1High = highScoreConfig.p1HighScore;
-        }
-        if(highScoreConfig === undefined){
-            this.p2High = 0;
-        }
-        else{
-            this.p2High = highScoreConfig.p2HighScore;
-        }
+    }
+    init(highScoreConfig){
+        this.p1High = highScoreConfig.p1HighScore||0;
+        this.p2High = highScoreConfig.p2HighScore||0;
     }
     preload(){
         this.load.image('starfield', 'assets/starfield.png');

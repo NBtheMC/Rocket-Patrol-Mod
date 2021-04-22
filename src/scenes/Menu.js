@@ -1,23 +1,16 @@
 class Menu extends Phaser.Scene {
-    constructor(highScoreConfig){
+    constructor(){
         super("menuScene");
-        if(highScoreConfig === undefined){
-            this.p1High = 0;
-        }
-        else{
-            this.p1High = highScoreConfig.p1HighScore;
-        }
-        if(highScoreConfig === undefined){
-            this.p2High = 0;
-        }
-        else{
-            this.p2High = highScoreConfig.p2HighScore;
-        }
+        
+    }
+    init(highScoreConfig){
+        this.p1High = highScoreConfig.p1HighScore||0;
+        this.p2High = highScoreConfig.p2HighScore||0;
     }
     preload(){
         //load audio
-        this.load.audio('sfx_select', 'assets/blip_select12.wav');       
-        this.load.audio('sfx_rocket', 'assets/rocket_shot.wav');
+        this.load.audio('sfx_select', 'assets/select.wav');
+        this.load.audio('sfx_rocket', 'assets/fire.wav');
         this.load.audio('sfx_explosion1', 'assets/explosion1.wav');
         this.load.audio('sfx_explosion2', 'assets/explosion2.wav');
         this.load.audio('sfx_explosion3', 'assets/explosion3.wav');
@@ -42,13 +35,14 @@ class Menu extends Phaser.Scene {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 0
+            fixedWidth: 0,
+            angle: 0
         }
 
         //show menu text
-        this.add.text(game.config.width/2, borderUISize + borderPadding, 'PONG PATROL', menuConfig).setOrigin(.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Player 1 High Score: ' + this.p1High + ' W/S to move E to fire', menuConfig).setOrigin(.5);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Player 2 High Score: I/K to move O to fire', menuConfig).setOrigin(.5);
+        let titleText = this.add.text(game.config.width/2, borderUISize + borderPadding, 'PADDLE PATROL', menuConfig).setOrigin(.5);
+        let p1Text = this.add.text(game.config.width/2, game.config.height/2, 'Player 1 High Score: ' + this.p1High + ' W/S to move E to fire', menuConfig).setOrigin(.5);
+        let p2Text = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Player 2 High Score: ' + this.p2High + ' I/K to move O to fire', menuConfig).setOrigin(.5);
         
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
@@ -64,7 +58,7 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             game.settings = {
                 spaceshipSpeed: 3,
-                gameTimer: 60000
+                gameTimer: 15000
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene',this.highScoreConfig);
@@ -73,10 +67,10 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             game.settings = {
                 spaceshipSpeed: 4,
-                gameTimer: 45000
+                gameTimer: 7000
             }
             this.sound.play('sfx_select');
-            this.scene.start('playScene',highScoreConfig);
+            this.scene.start('playScene',this.highScoreConfig);
         }
     }
 }

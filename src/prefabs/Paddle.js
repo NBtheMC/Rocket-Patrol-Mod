@@ -11,7 +11,6 @@ class Paddle extends Phaser.GameObjects.Sprite{
         this.movementSpeed = 6;    //pixels per frame      
     }
 
-
     update(){
         //move up and down
         if((this.upKey).isDown && this.y >= borderUISize){
@@ -20,7 +19,7 @@ class Paddle extends Phaser.GameObjects.Sprite{
         if(this.downKey.isDown && this.y <= game.config.height - borderUISize){
             this.y += this.movementSpeed;
         }
-        this.y = Phaser.Math.Clamp(this.y, borderUISize+borderPadding, game.config.height - borderUISize - borderPadding);
+        this.y = Phaser.Math.Clamp(this.y, 3*(borderUISize+borderPadding), game.config.height - borderUISize - borderPadding);
     }
 
     getX(){
@@ -30,6 +29,4 @@ class Paddle extends Phaser.GameObjects.Sprite{
     getY(){
         return this.y;
     }
-
-    
 }
