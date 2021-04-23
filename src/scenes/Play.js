@@ -91,8 +91,8 @@ class Play extends Phaser.Scene {
         let scoreConfigp1 = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#EB8A23',
+            color: '#000000',
             align: 'right',
             padding: {
               top: 5,
@@ -107,8 +107,8 @@ class Play extends Phaser.Scene {
         let scoreConfigp2 = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#54579E',
+            color: '#000000',
             align: 'right',
             padding: {
               top: 5,
@@ -121,6 +121,9 @@ class Play extends Phaser.Scene {
         //GAME OVER flag
         this.gameOver = false;
         //play timer
+        this.secondsLeft = game.settings.gameTimer;
+        this.secondsLeft/=1000;
+        this.timerText = this.add.text(32, 32, this.secondsLeft);
         scoreConfigp1.fixedWidth = 0;
         scoreConfigp2.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, ()=>{
@@ -128,9 +131,21 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfigp1).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+        // Each 1000 ms call onEvent
+        // from jjcapellan
+        this.timedEvent = this.time.addEvent({ delay: 1000, callback: onSecond, callbackScope: this, loop: true });
+        function onSecond ()
+        {
+            if(this.secondsLeft>0){
+                this.secondsLeft -= 1; // One second
+                this.timerText.setText(this.secondsLeft);
+            }
+        }
     }
 
+ 
     
+
     update(){
         //restart
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
