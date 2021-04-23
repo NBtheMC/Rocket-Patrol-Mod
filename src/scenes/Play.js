@@ -25,9 +25,9 @@ class Play extends Phaser.Scene {
 
     create(){
         // play background music on loop
-        let background = this.sound.add('background_song');
-        background.setLoop(true);
-        background.play();
+        this.background = this.sound.add('background_song');
+        this.background.setLoop(true);
+        this.background.play();
 
         console.log("p1: " + this.p1High + " p2: " + this.p2High);
 
@@ -157,19 +157,25 @@ class Play extends Phaser.Scene {
 
     update(){
         //restart
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
-            let highScoreConfig = {
-                p1HighScore: Math.max(this.p1Score,this.p1High),
-                p2HighScore: Math.max(this.p2Score,this.p2High)
-            };
-            this.scene.restart(highScoreConfig);
-        }
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
-            let highScoreConfig = {
-                p1HighScore: Math.max(this.p1Score,this.p1High),
-                p2HighScore: Math.max(this.p2Score,this.p2High)
-            };
-            this.scene.start("menuScene", highScoreConfig);
+        // if(Phaser.Input.Keyboard.JustDown(keyR)){
+        //     this.gameOver = true;
+        // }
+        if(this.gameOver){
+            this.background.stop();
+            if(Phaser.Input.Keyboard.JustDown(keyR)){
+                let highScoreConfig = {
+                    p1HighScore: Math.max(this.p1Score,this.p1High),
+                    p2HighScore: Math.max(this.p2Score,this.p2High)
+                };
+                this.scene.restart(highScoreConfig);
+            }
+            if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
+                let highScoreConfig = {
+                    p1HighScore: Math.max(this.p1Score,this.p1High),
+                    p2HighScore: Math.max(this.p2Score,this.p2High)
+                };
+                this.scene.start("menuScene", highScoreConfig);
+            }
         }
         //parallax scrolling
         this.starfield.tilePositionY -= 0.2;
