@@ -123,7 +123,8 @@ class Play extends Phaser.Scene {
         //play timer
         this.secondsLeft = game.settings.gameTimer;
         this.secondsLeft/=1000;
-        this.timerText = this.add.text(32, 32, this.secondsLeft);
+        scoreConfigp2.backgroundColor = '#FFFFFF';
+        this.timerText = this.add.text(game.config.width/2-50, borderUISize + borderPadding*2, this.secondsLeft, scoreConfigp2);
         scoreConfigp1.fixedWidth = 0;
         scoreConfigp2.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, ()=>{
