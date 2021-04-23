@@ -17,7 +17,6 @@
 //  Theres also a secret 5th explosion sound that has a 1/41 chance of activating
 
 
-console.log("hows it going dood");
 let config = {
     type: Phaser.CANVAS,
     width: 640,

@@ -24,9 +24,9 @@ class Play extends Phaser.Scene {
 
     create(){
         // play background music on loop
-        // let background = this.sound.add('background_music');
-        // background.setLoop(true);
-        // background.play();
+        let background = this.sound.add('background_song');
+        background.setLoop(true);
+        background.play();
 
         console.log("p1: " + this.p1High + " p2: " + this.p2High);
 
