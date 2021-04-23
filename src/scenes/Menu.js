@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
     }
     preload(){
         //load audio
+        this.load.audio('intro_song', 'assets/intro.wav');
         this.load.audio('sfx_select', 'assets/select.wav');
         this.load.audio('sfx_rocket', 'assets/fire.wav');
         this.load.audio('sfx_explosion1', 'assets/explosion1.wav');
@@ -41,22 +42,22 @@ class Menu extends Phaser.Scene {
 
         //menu text
         this.add.text(game.config.width/2, borderUISize + borderPadding, 'PADDLE PATROL', menuConfig).setOrigin(.5);
+        this.sound.play('intro_song');
 
         menuConfig.fontSize = '32px'
 
         //p1 p2 controls
 
         menuConfig.backgroundColor = '#EB8A23';
-        this.add.text(game.config.width/2, 1.1*game.config.height/2, 'Player 1 High Score: ' + this.p1High + ' W/S to move E to fire', menuConfig).setOrigin(.5);
+        this.add.text(game.config.width/2, 1.1*game.config.height/2, 'Player 1 High Score: ' + this.p1High + '. W/S to move E to fire', menuConfig).setOrigin(.5);
         
         menuConfig.backgroundColor = '#54579E';
-        this.add.text(game.config.width/2, 1.1*(game.config.height/2 + borderUISize + borderPadding + 10), 'Player 2 High Score: ' + this.p2High + ' I/K to move O to fire', menuConfig).setOrigin(.5);
-  
+        this.add.text(game.config.width/2, 1.1*(game.config.height/2 + borderUISize + borderPadding + 10), 'Player 2 High Score: ' + this.p2High + '. I/K to move O to fire', menuConfig).setOrigin(.5);
         menuConfig.backgroundColor = '#00FF00';
         this.add.text(game.config.width/2, game.config.height - (borderUISize + borderPadding), 'Press ← for Slow or → for Fast',menuConfig).setOrigin(.5);
         
         //how 2 play
-        this.add.text(game.config.width/2, 3*(borderUISize + borderPadding), 'Shoot the ships and your\nopponent\'s side to get points', menuConfig).setOrigin(.5);
+        this.add.text(game.config.width/2, 3*(borderUISize + borderPadding), 'Shoot the ships and score in your\nopponent\'s side to get points', menuConfig).setOrigin(.5);
 
         menuConfig.fontSize = '14px'
         menuConfig.backgroundColor = '#FFFFFF';

@@ -1,11 +1,14 @@
 class Play extends Phaser.Scene {
+    
     constructor(){
         super("playScene");
     }
+
     init(highScoreConfig){
         this.p1High = highScoreConfig.p1HighScore||0;
         this.p2High = highScoreConfig.p2HighScore||0;
     }
+
     preload(){
         this.load.image('starfield', 'assets/starfield.png');
         this.load.image('earth', 'assets/earth.png');
@@ -18,7 +21,13 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('explosion', 'assets/explosion.png', 
             {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 9});
     }
+
     create(){
+        // play background music on loop
+        // let background = this.sound.add('background_music');
+        // background.setLoop(true);
+        // background.play();
+
         console.log("p1: " + this.p1High + " p2: " + this.p2High);
 
         this.starfield = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
@@ -128,6 +137,7 @@ class Play extends Phaser.Scene {
         scoreConfigp1.fixedWidth = 0;
         scoreConfigp2.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, ()=>{
+            scoreConfigp2.backgroundColor = '#FFFFFF';
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfigp1).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfigp1).setOrigin(0.5);
             this.gameOver = true;
@@ -143,9 +153,6 @@ class Play extends Phaser.Scene {
             }
         }
     }
-
- 
-    
 
     update(){
         //restart
