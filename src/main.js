@@ -1,8 +1,8 @@
 // Point breakdown -----------------------------------------
 // Track high score across scenes and display it in UI (5)
 // Simultaneous two player mode (30)
-// Create own mod: While shooting, a paddle is deployed. This paddle reflects any incoming rockets. If a rocket passes a player, points gets added  (10)
-//  I have been told by a TA that this is similar to the new weapon mod. But it doesn't have new graphics so I would place it as half the points as that
+// Create own mod: While shooting, a paddle is deployed. This paddle reflects any incoming rockets. If a rocket passes a player, points gets added  (15)
+//  I have been told by a TA that this is similar to the new weapon mod. But it doesn't have new graphics so I would take 5 points off
 // Display time remaining (in seconds) on the screen (10)
 //  Counts down in top
 // Create new title screen (10)
@@ -15,6 +15,7 @@
 //  I made it short cause ive never made music before
 // Create 4 new explosion SFX and randomize which one plays on impact (10)
 //  Theres also a secret 5th explosion sound that has a 1/41 chance of activating
+// Total points - 100
 
 
 let config = {
