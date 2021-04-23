@@ -20,6 +20,7 @@ class Menu extends Phaser.Scene {
     }
 
     create(){
+        this.sound.play('intro_song');
          //high score config
         this.highScoreConfig = {
             p1HighScore: this.p1High,
@@ -42,7 +43,7 @@ class Menu extends Phaser.Scene {
 
         //menu text
         this.add.text(game.config.width/2, borderUISize + borderPadding, 'PADDLE PATROL', menuConfig).setOrigin(.5);
-        this.sound.play('intro_song');
+        
 
         menuConfig.fontSize = '32px'
 
@@ -72,8 +73,8 @@ class Menu extends Phaser.Scene {
         //easy mode
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             game.settings = {
-                spaceshipSpeed: 2.5,
-                gameTimer: 45000
+                spaceshipSpeed: 45000,
+                gameTimer: 200
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene',this.highScoreConfig);
